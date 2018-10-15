@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Builder
 public class BookInfo {
+    BookFormat format;
     String title;
     List<String> authors;
     String image;
