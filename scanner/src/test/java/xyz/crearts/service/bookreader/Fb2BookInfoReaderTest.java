@@ -1,4 +1,4 @@
-package xyz.crearts.service.impl;
+package xyz.crearts.service.bookreader;
 
 import org.junit.Test;
 import xyz.crearts.xyz.crearts.model.BookFormat;
@@ -21,7 +21,7 @@ public class Fb2BookInfoReaderTest {
 
     @Test
     public void readFb2() throws Exception {
-        Fb2BookInfoReader reader = new Fb2BookInfoReader();
+        Fb2BookReader reader = new Fb2BookReader();
 
         try (ZipInputStream zis = new ZipInputStream(getClass().getClassLoader().getResourceAsStream("test.fb2.zip"))) {
             if (zis.getNextEntry() != null) {
@@ -46,7 +46,7 @@ public class Fb2BookInfoReaderTest {
 
     @Test
     public void read() throws Exception {
-        Fb2BookInfoReader reader = new Fb2BookInfoReader();
+        Fb2BookReader reader = new Fb2BookReader();
 
         try (ZipInputStream zis = new ZipInputStream(getClass().getClassLoader().getResourceAsStream("test.fb2.zip"))) {
             if (zis.getNextEntry() != null) {

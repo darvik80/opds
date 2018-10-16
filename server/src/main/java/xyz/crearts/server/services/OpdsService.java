@@ -13,7 +13,14 @@ import xyz.crearts.server.models.atom.Content;
 import xyz.crearts.server.models.atom.Entry;
 import xyz.crearts.server.models.atom.Feed;
 import xyz.crearts.server.models.atom.Link;
+import xyz.crearts.service.BookReader;
+import xyz.crearts.service.Scanner;
+import xyz.crearts.service.bookreader.EpubBookReader;
+import xyz.crearts.service.bookreader.Fb2BookReader;
+import xyz.crearts.service.bookreader.Fb2ZipBookReader;
+import xyz.crearts.service.bookreader.PdfBookReader;
 
+import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,6 +31,18 @@ import java.util.List;
  * @author ivan.kishchenko
  */
 public class OpdsService implements Service {
+    @Inject
+    private Scanner scanner;
+
+    public OpdsService() {
+        List<BookReader> readers = new ArrayList<>();
+        readers.add(new Fb2BookReader());
+        readers.add(new Fb2ZipBookReader());
+        readers.add(new EpubBookReader());
+        readers.add(new PdfBookReader());
+
+        this.scanner = new Scanner(readers);
+    }
 
     @Override
     public void update(Routing.Rules rules) {

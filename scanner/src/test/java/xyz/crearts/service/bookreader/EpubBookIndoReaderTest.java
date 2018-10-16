@@ -1,16 +1,10 @@
-package xyz.crearts.service.impl;
+package xyz.crearts.service.bookreader;
 
-import nl.siegmann.epublib.domain.Book;
 import org.junit.Test;
 import xyz.crearts.xyz.crearts.model.BookFormat;
 import xyz.crearts.xyz.crearts.model.BookInfo;
-import xyz.crearts.xyz.crearts.model.fb.Fb2Author;
-import xyz.crearts.xyz.crearts.model.fb.Fb2Binary;
-import xyz.crearts.xyz.crearts.model.fb.Fb2BookInfo;
-import xyz.crearts.xyz.crearts.model.fb.Fb2CoverPage;
 
 import java.util.List;
-import java.util.zip.ZipInputStream;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +15,7 @@ public class EpubBookIndoReaderTest {
 
     @Test
     public void read() throws Exception {
-        EpubBookIndoReader reader = new EpubBookIndoReader();
+        EpubBookReader reader = new EpubBookReader();
 
         BookInfo bookInfo = reader.read(getClass().getClassLoader().getResourceAsStream("test.epub"));
 

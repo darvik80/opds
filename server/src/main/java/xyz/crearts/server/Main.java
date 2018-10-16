@@ -27,10 +27,15 @@ import io.helidon.webserver.json.JsonSupport;
 import xyz.crearts.server.services.GreetService;
 import xyz.crearts.server.services.OpdsService;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 /**
  * Simple Hello World rest application.
  */
-public final class Main {
+@ApplicationScoped
+@ApplicationPath("/")
+public final class Main extends Application {
 
     /**
      * Cannot be instantiated.

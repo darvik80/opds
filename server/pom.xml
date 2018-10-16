@@ -162,6 +162,12 @@
             <groupId>io.helidon.webserver</groupId>
             <artifactId>helidon-webserver-bundle</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.helidon.microprofile.bundles</groupId>
+            <artifactId>helidon-microprofile-1.1</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.helidon.config</groupId>
             <artifactId>helidon-config-yaml</artifactId>
@@ -193,6 +199,16 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>23.2-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+        <dependency>
+            <groupId>xyz.crearts</groupId>
+            <artifactId>scanner</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

@@ -1,26 +1,20 @@
-package xyz.crearts.service.impl;
+package xyz.crearts.service.bookreader;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import xyz.crearts.service.BookInfoReader;
+import xyz.crearts.service.BookReader;
 import xyz.crearts.xyz.crearts.model.BookFormat;
 import xyz.crearts.xyz.crearts.model.BookInfo;
 import xyz.crearts.xyz.crearts.model.fb.Fb2Binary;
 import xyz.crearts.xyz.crearts.model.fb.Fb2BookInfo;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.stream.Collectors;
-import java.util.zip.ZipInputStream;
 
 /**
  * @author ivan.kishchenko
  */
-public class Fb2BookInfoReader implements BookInfoReader {
-    private static final String SUFFIX_FB2_ZIP = ".fb2.zip";
-    private static final String SUFFIX_FB2 = ".fb2";
-
-
+public class Fb2BookReader implements BookReader {
     public Fb2BookInfo readFb2(InputStream is) throws Exception {
         Serializer serializer = new Persister();
 
@@ -28,28 +22,16 @@ public class Fb2BookInfoReader implements BookInfoReader {
     }
 
     @Override
-    public BookInfo read(InputStream is) throws Exception {
-        return convertFb2ToBookInfo(this.readFb2(is), BookFormat.BF_FB2);
+    public BookFormat format() {
+        return BookFormat.BF_FB2;
     }
 
     @Override
-    public BookInfo read(String filePath) throws Exception {
-        InputStream is = new FileInputStream(filePath);
-
-        if (filePath.endsWith(SUFFIX_FB2_ZIP)) {
-            try (ZipInputStream zis = new ZipInputStream(is)) {
-                if (zis.getNextEntry() == null) {
-                    return convertFb2ToBookInfo(this.readFb2(is), BookFormat.BF_FB2ZIP);
-                }
-            }
-
-            return null;
-        }
-
-        return convertFb2ToBookInfo(this.readFb2(is), BookFormat.BF_FB2);
+    public BookInfo read(InputStream is) throws Exception {
+        return convertFb2ToBookInfo(this.readFb2(is));
     }
 
-    private BookInfo convertFb2ToBookInfo(Fb2BookInfo fb2BookInfo, BookFormat format) {
+    private BookInfo convertFb2ToBookInfo(Fb2BookInfo fb2BookInfo) {
         String image = null;
         if (fb2BookInfo.getDescription().getTitleInfo().getCoverPage().getImage().size() > 0) {
             image = fb2BookInfo.getDescription().getTitleInfo().getCoverPage().getImage().get(0).getHref();
@@ -99,7 +81,7 @@ public class Fb2BookInfoReader implements BookInfoReader {
                     }).collect(Collectors.toList())
             )
             .image(image)
-            .format(format)
+            .format(format())
             .build();
 
     }
