@@ -17,6 +17,7 @@
 package xyz.crearts.server;
 
 import java.io.IOException;
+import java.security.Security;
 import java.util.logging.LogManager;
 
 import io.helidon.config.Config;
@@ -24,8 +25,10 @@ import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerConfiguration;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.json.JsonSupport;
+import lombok.extern.slf4j.Slf4j;
 import xyz.crearts.server.services.GreetService;
 import xyz.crearts.server.services.OpdsService;
+import xyz.crearts.server.services.ScannerService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
@@ -35,25 +38,13 @@ import javax.ws.rs.core.Application;
  */
 @ApplicationScoped
 @ApplicationPath("/")
+@Slf4j
 public final class Main extends Application {
 
     /**
      * Cannot be instantiated.
      */
     private Main() { }
-
-    /**
-     * Creates new {@link Routing}.
-     *
-     * @return the new instance
-     */
-    private static Routing createRouting() {
-        return Routing.builder()
-                .register(JsonSupport.get())
-                .register("/greet", new GreetService())
-                .register("/opds", new OpdsService())
-                .build();
-    }
 
     /**
      * Application main entry point.
@@ -78,21 +69,32 @@ public final class Main extends Application {
         // By default this will pick up application.yaml from the classpath
         Config config = Config.create();
 
+        Config ds = config.get("datasource");
+        log.info(ds.toString());
+
         // Get webserver config from the "server" section of application.yaml
         ServerConfiguration serverConfig =
                 ServerConfiguration.fromConfig(config.get("server"));
 
-        WebServer server = WebServer.create(serverConfig, createRouting());
+        Routing routing = Routing.builder()
+                .register(JsonSupport.get())
+                .register("/greet", new GreetService())
+                .register("/opds", new OpdsService())
+                .register("/scanner", new ScannerService(config.get("storage")))
+                .build();
+
+
+        WebServer server = WebServer.create(serverConfig, routing);
 
         // Start the server and print some info.
         server.start().thenAccept(ws -> {
-            System.out.println(
-                    "WEB server is up! http://localhost:" + ws.port());
+            log.info("WEB server is up! http://localhost:" + ws.port());
         });
 
         // Server threads are not demon. NO need to block. Just react.
-        server.whenShutdown().thenRun(()
-                -> System.out.println("WEB server is DOWN. Good bye!"));
+        server.whenShutdown().thenRun(() -> {
+            log.info("WEB server is DOWN. Good bye!");
+        });
 
         return server;
     }

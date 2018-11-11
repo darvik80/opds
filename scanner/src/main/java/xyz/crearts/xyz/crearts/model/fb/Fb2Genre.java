@@ -10,6 +10,6 @@ import org.simpleframework.xml.Text;
 @Data
 @Root(name="genre")
 public class Fb2Genre {
-    @Text
+    @Text(required = false)
     String text;
 }

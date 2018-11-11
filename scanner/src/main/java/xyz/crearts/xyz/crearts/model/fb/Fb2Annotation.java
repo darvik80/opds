@@ -10,6 +10,6 @@ import org.simpleframework.xml.Text;
 @Data
 @Root(name="annotation")
 public class Fb2Annotation {
-    @Text
+    @Text(required = false)
     private String text;
 }

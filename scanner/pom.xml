@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>scanner</artifactId>
+
     <properties>
         <epublib-core.version>3.1</epublib-core.version>
     </properties>
@@ -22,8 +23,9 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/nl.siegmann.epublib/epublib-core -->
         <dependency>
-            <groupId>com.aliwx.support</groupId>
+            <groupId>nl.siegmann.epublib</groupId>
             <artifactId>epublib-core</artifactId>
             <version>${epublib-core.version}</version>
         </dependency>

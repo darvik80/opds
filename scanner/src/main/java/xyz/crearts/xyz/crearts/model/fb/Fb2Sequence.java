@@ -10,9 +10,9 @@ import org.simpleframework.xml.Root;
 @Data
 @Root(name="sequence")
 public class Fb2Sequence {
-    @Attribute
+    @Attribute(required = false)
     private String name;
 
-    private @Attribute
+    private @Attribute(required = false)
     Integer number;
 }

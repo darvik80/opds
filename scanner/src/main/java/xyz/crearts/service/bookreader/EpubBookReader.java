@@ -48,7 +48,7 @@ public class EpubBookReader implements BookReader {
                     return builder.toString().trim();
                 }).collect(Collectors.toList())
             )
-            .image(Base64.getEncoder().encodeToString(book.getCoverImage().getData()))
+            .image(book.getCoverImage() != null ? Base64.getEncoder().encodeToString(book.getCoverImage().getData()) : null)
             .format(format())
             .build();
     }

@@ -21,11 +21,15 @@ public class PdfBookReader implements BookReader {
     public BookInfo read(InputStream is) throws Exception {
 
         try (PDDocument doc = PDDocument.load(is)) {
-            return BookInfo.builder()
-                .authors(Collections.singletonList(doc.getDocumentInformation().getAuthor()))
-                .title(doc.getDocumentInformation().getTitle())
-                .format(format())
-                .build();
+            if (!doc.isEncrypted()) {
+                return BookInfo.builder()
+                        .authors(Collections.singletonList(doc.getDocumentInformation().getAuthor()))
+                        .title(doc.getDocumentInformation().getTitle())
+                        .format(format())
+                        .build();
+            }
+
+            throw new Exception("Encrypted PDF");
         }
     }
 }
